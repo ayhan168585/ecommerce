@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext,useState } from "react";
 import { GlobalState } from "../../../GlobalState";
 import { Link } from "react-router-dom";
 
 function Cart() {
   const state = useContext(GlobalState);
   const [cart] = state.userAPI.cart;
+  const [total,setTotal]=useState(0)
 
   if (cart.length === 0)
     return (
@@ -13,23 +14,26 @@ function Cart() {
   return (
     <div>
       {cart.map((product) => (
-        <div className="detail">
+        <div className="detail cart">
           <img src={product.images.url} alt="" />
           <div className="box-detail">
-            <div className="row">
               <h2>{product.title}</h2>
-              <h6>#id: {product.product_id}</h6>
-            </div>
-            <span>{product.price},00 TL.</span>
+            <h3>{product.price*product.quantity},00 TL.</h3>
             <p>{product.description}</p>
             <p>{product.content}</p>
-            <p>Satılan:{product.sold}</p>
-            <Link to="/cart" className="cart">
-              Satın al
-            </Link>
+            <div className="amount">
+                <button> - </button>
+                <span>{product.quantity}</span>
+                <button> + </button>
+            </div>
+          <div className="delete">X</div>
           </div>
         </div>
       ))}
+      <div className="total">
+          <h3>Toplam : {total}</h3>
+          <Link to="">Ödeme yap</Link>
+      </div>
     </div>
   );
 }
